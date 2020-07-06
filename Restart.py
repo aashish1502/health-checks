@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 
-def Resstart():
+def Restart():
 
     if(os.path.exists("/run/restart-required")):
         return True
@@ -19,22 +19,23 @@ def Disk_check(disk,min_gb,min_percent):
 
 
 def root_check_disk():
-    Disk_check('/' ,0,100)
+    Disk_check('/' ,2,10)
 
 
 def main():
 
-    if(root_check_disk()):
-        print("root partition full.")
-        sys.exit(1)
-    print("All good!")
-    
-    if(Resstart()):
-        print("Restart is required.")
-        sys.exit(1)
+    checks=[
+        (Restart(),"Restart required"),
+        (root_check_disk(),"root partition full")
+        ]
 
-    print("Restart is not required.")
+    for check,statement in checks:
+        if(check):
+            print(statement)
+            sys.exit(1)
 
+    print("Everything is okay!")
     sys.exit(0)
+
 
 main()
