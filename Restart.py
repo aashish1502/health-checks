@@ -29,10 +29,15 @@ def main():
         (root_check_disk(),"root partition full")
         ]
 
+    okay=True
+
     for check,statement in checks:
         if(check):
             print(statement)
-            sys.exit(1)
+            okay =False
+
+    if not okay:
+        sys.exit(1)
 
     print("Everything is okay!")
     sys.exit(0)
